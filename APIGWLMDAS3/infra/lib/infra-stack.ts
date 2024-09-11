@@ -4,6 +4,7 @@ import * as s3 from 'aws-cdk-lib/aws-s3'
 import * as iam from 'aws-cdk-lib/aws-iam'
 import { Lambda } from 'aws-cdk-lib/aws-ses-actions';
 import * as lambda from 'aws-cdk-lib/aws-lambda'
+import * as apigateway from 'aws-cdk-lib/aws-apigateway'
 import assert = require('assert');
 export class InfraStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -30,8 +31,18 @@ export class InfraStack extends cdk.Stack {
    handler:"lambda_function.lambda_handler",
    runtime: lambda.Runtime.PYTHON_3_8,  //should declare first to avoid onscreen error
    role: lamdarole
+  })
+ 
+  // Create API gateway
+  const bankstatusapi = new apigateway.LambdaRestApi(this,'bankstatusapi', {
+    handler: bankingLambda,
+    restApiName: "bankstatusapi",
+    deploy: true,
+    proxy: false
 
   })
+  const bankstatus = bankstatusapi.root.addResource('bankstatus');
+  bankstatus.addMethod('GET');
    
   }
 }
