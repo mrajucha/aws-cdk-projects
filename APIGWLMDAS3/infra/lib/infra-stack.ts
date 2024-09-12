@@ -6,6 +6,7 @@ import { Lambda } from 'aws-cdk-lib/aws-ses-actions';
 import * as lambda from 'aws-cdk-lib/aws-lambda'
 import * as apigateway from 'aws-cdk-lib/aws-apigateway'
 import assert = require('assert');
+
 export class InfraStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
@@ -14,7 +15,7 @@ export class InfraStack extends cdk.Stack {
 
   //define s3 
   const mys3bucket = new s3.Bucket(this, 'mydemobuckets3',{
-       bucketName : 'demobuckettoday0809',
+       bucketName : 'demobuckettoday6408898656860809',
        versioned: true
   })
  
@@ -24,7 +25,7 @@ export class InfraStack extends cdk.Stack {
     description: 'The role is to access the s3 bucket',
     assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com')
   }) 
-  lamdarole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmzonS3FullAccess'));
+  lamdarole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonS3FullAccess')); 
 
   const bankingLambda = new lambda.Function(this, 'bankingLambda',{
    code: lambda.Code.fromAsset('../app'),
@@ -44,5 +45,7 @@ export class InfraStack extends cdk.Stack {
   const bankstatus = bankstatusapi.root.addResource('bankstatus');
   bankstatus.addMethod('GET');
    
+  
+
   }
 }
