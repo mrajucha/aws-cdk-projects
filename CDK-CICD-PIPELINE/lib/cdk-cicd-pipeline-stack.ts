@@ -20,10 +20,10 @@ export class CdkCicdPipelineStack extends cdk.Stack {
     // Use a connection created using the AWS console to authenticate to GitHub
     // Other sources are available.
     input: CodePipelineSource.gitHub(
-      'mrajucha/aws-cdk-projects',
+      'mrajucha/aws-cdk-projects',  
       'main',
     ),
-    commands: ['npm ci', 'npm run build', 'npx cdk synth'],
+    commands: ['cd CDK-CICD-PIPELINE','npm ci', 'npm run build', 'npx cdk synth'],
   }),
 
  })

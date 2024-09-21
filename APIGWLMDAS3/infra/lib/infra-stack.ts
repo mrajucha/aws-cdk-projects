@@ -44,8 +44,11 @@ export class InfraStack extends cdk.Stack {
   })
   const bankstatus = bankstatusapi.root.addResource('bankstatus');
   bankstatus.addMethod('GET');
-   
   
+
+
+ 
 
   }
 }
+
