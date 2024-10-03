@@ -21,7 +21,7 @@ export class CdkCicdPipelineStack extends cdk.Stack {
     // Other sources are available.
     input: CodePipelineSource.gitHub(
       'mrajucha/aws-cdk-projects',  
-      'main',
+      'main',{}
     ),
     commands: ['cd CDK-CICD-PIPELINE','npm ci', 'npm run build', 'npx cdk synth'],
   }),

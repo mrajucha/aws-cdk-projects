@@ -11,7 +11,7 @@ export class InfraStack extends cdk.Stack {
 
     // create s3 bucket to store the json files
     const s3bucketforjson = new s3.Bucket(this,'s3bucketforjson',{
-      bucketName : "manojc435",
+      bucketName : "manojc4352009",
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL, // default deny 
       versioned: false,
 
@@ -24,14 +24,15 @@ export class InfraStack extends cdk.Stack {
         assumedBy: new IAM.ServicePrincipal('lambda.amazonaws.com')
     })
     lambdaRolefors3.addManagedPolicy(IAM.ManagedPolicy.fromAwsManagedPolicyName('AmazonS3FullAccess'))
-    lambdaRolefors3.addManagedPolicy(IAM.ManagedPolicy.fromAwsManagedPolicyName('DynamoDBFullAccess'))  
+    lambdaRolefors3.addManagedPolicy(IAM.ManagedPolicy.fromAwsManagedPolicyName('AmazonDynamoDBFullAccess'))
 
     // create lambda function to trigger when json files are store in s3
     const lamdafuncfors3 = new lambda.Function(this,'lambdafuncfors3',{        // case sensitive l small F capital or wont work
            code : lambda.Code.fromAsset('../app'),
            handler : "lambda_function.lambda_handler",
            runtime : lambda.Runtime.PYTHON_3_11,
-           role: lambdaRolefors3
+           role: lambdaRolefors3,
+           functionName : 'lamdafuncfors3'
            
     })
     // Add dependecy to role before lambda 
@@ -41,7 +42,7 @@ export class InfraStack extends cdk.Stack {
     // create dynamodb to store the data from s3 
     const dbTostoreFromS3 = new dynamodb.TableV2(this, 'dbTostoreFromS3',{
       partitionKey: { name: 'customerData', type: dynamodb.AttributeType.STRING },
-      tableName: 'tableTostoreJson'
+      tableName: 'tableTostoreJson2209'
       
     })
 
