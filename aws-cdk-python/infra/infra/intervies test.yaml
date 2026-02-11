@@ -1,0 +1,34 @@
+name : test workflow for cdk 
+
+on: workflow_dispatch
+  inputs:
+    stack:
+      description : select the stack
+      type: choice
+      options:
+        - VPC
+        - EC2
+        - RDS
+
+    env:
+      description: select the env
+      type: choice 
+      options:
+        - dev
+        - prod
+
+    action:
+      description: select the action
+      type: choice 
+      options:
+        - deploy
+        - destroy    
+
+
+jobs:
+  stack deployment:
+    name: cdk - ${github.events.inputs.action.} - ${github.events.inputs.stack}
+    runs-on : ubuntu-latest
+
+    steps:
+    
