@@ -1,0 +1,80 @@
+name: IAC deployment on AWS
+
+on: 
+   workflow_dispatch:    # also can be triggered with commit, push to master, merge pR.
+  #  push:
+  #       branches:
+  #       - master
+      inputs:
+          module:
+              description: A terraform module to select.
+              type: choice
+              options:
+                  - vpc
+                  - eks
+                  - rds
+                  - s3
+          env:
+              description: environment to select.
+              type: choice
+              options:
+                  - dev
+                  - prod
+          action:
+              description: teraform action to select.
+              type: choice
+              options:
+                  - plan
+                  - apply
+                  - destroy        
+                     
+
+jobs:
+   terraform:
+       name: terraform ${{github.event.inputs.action}} - ${{github.event.input.env}}
+       runs_on: ubuntu-latest
+
+       env: 
+           aws-access-key: ${{secretes.AWS_ACCESS_KEYS}}
+           aws-secret-key: ${{secrets.AWS_SECRET_KEYS}}
+           region: ${{secrets.AWS_REGION}}
+           MODULE_PATH: terraform/${{github.events.inputs.module}}
+
+       steps:
+           - name: checkout repo
+             uses: actoions/checkout@4
+
+           - name: aws configure
+             uses: aws-actoions/ configure-aws-credentials@4'
+             with:
+                 aws-acces-key-id: ${{env.AWS_ACCESS_KEYS}} 
+
+           - name: install terraform
+             uses: hashicorp/setup-terraform@3
+             with:
+                terraform_version: 1.9.6
+
+           - name: initialise terraform
+             run: terraform init
+
+           - name: terraform validate
+             run: terraform validate
+
+           - name: terraform plan
+             if: github.event.inputs.action = "plan"
+             run: terraform plan
+
+           - name: terraform apply
+             if: github.event.inputes.action = "apply"
+             run: terraform apply
+
+           - name: terraform destroy 
+             if: github.event.inputs.action = "destroy"
+             
+                 
+
+
+
+
+
+   
